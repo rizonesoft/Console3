@@ -1,7 +1,7 @@
 # Console3
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Build Status](https://github.com/rizonesoft/Console3/actions/workflows/build.yml/badge.svg)](https://github.com/rizonesoft/Console3/actions)
+[![Build Status](https://github.com/rizonesoft/Console3/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/rizonesoft/Console3/actions)
 [![Windows](https://img.shields.io/badge/Platform-Windows%2010%2F11-0078D6?logo=windows)](https://github.com/rizonesoft/Console3)
 
 A lightweight, native Windows terminal emulator built on the modern **ConPTY** (Windows Pseudo Console) API with **Direct2D** hardware-accelerated rendering.
