@@ -7,23 +7,31 @@ on:
     branches: [ main ]
 
 env:
-  CMAKE_VERSION: 3.28
+  # VS2026 uses generator "Visual Studio 18 2026"
+  CMAKE_GENERATOR: "Visual Studio 18 2026"
   BUILD_TYPE: Release
 
 jobs:
   build:
-    name: Build ${{ matrix.arch }}
+    name: Build ${{ matrix.config.name }}
     runs-on: windows-latest
     
     strategy:
       fail-fast: false
       matrix:
-        arch: [x64, ARM64]
-        include:
-          - arch: x64
-            cmake_arch: x64
-          - arch: ARM64
-            cmake_arch: ARM64
+        config:
+          - name: x64
+            arch: x64
+            avx2: OFF
+            artifact_suffix: x64_v144
+          - name: x64_AVX2
+            arch: x64
+            avx2: ON
+            artifact_suffix: AVX2_x64_v144
+          - name: ARM64
+            arch: ARM64
+            avx2: OFF
+            artifact_suffix: ARM64_v144
 
     steps:
     - name: Checkout
@@ -34,27 +42,33 @@ jobs:
     - name: Setup Visual Studio
       uses: microsoft/setup-msbuild@v2
 
-    - name: Setup CMake
-      uses: lukka/get-cmake@latest
-
     - name: Configure CMake
       run: |
-        cmake -B build -G "Visual Studio 17 2022" -A ${{ matrix.cmake_arch }}
+        $outputDir = "${{ github.workspace }}\Bin\${{ env.BUILD_TYPE }}_${{ matrix.config.artifact_suffix }}"
+        cmake -B build `
+          -G "${{ env.CMAKE_GENERATOR }}" `
+          -A ${{ matrix.config.arch }} `
+          -DENABLE_AVX2=${{ matrix.config.avx2 }} `
+          -DCMAKE_RUNTIME_OUTPUT_DIRECTORY="$outputDir" `
+          -DCMAKE_LIBRARY_OUTPUT_DIRECTORY="$outputDir" `
+          -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY="$outputDir\lib"
+      shell: pwsh
 
     - name: Build
       run: |
         cmake --build build --config ${{ env.BUILD_TYPE }} --parallel
 
     - name: Run Tests
-      if: matrix.arch == 'x64'
+      if: matrix.config.arch == 'x64' && matrix.config.avx2 == 'OFF'
       run: |
         ctest --test-dir build --build-config ${{ env.BUILD_TYPE }} --output-on-failure
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: Console3-${{ matrix.arch }}
+        name: Console3-${{ env.BUILD_TYPE }}_${{ matrix.config.artifact_suffix }}
         path: |
-          build/bin/${{ env.BUILD_TYPE }}/*.exe
-          build/bin/${{ env.BUILD_TYPE }}/*.dll
+          Bin/${{ env.BUILD_TYPE }}_${{ matrix.config.artifact_suffix }}/*.exe
+          Bin/${{ env.BUILD_TYPE }}_${{ matrix.config.artifact_suffix }}/*.dll
+          Bin/${{ env.BUILD_TYPE }}_${{ matrix.config.artifact_suffix }}/*.pdb
         if-no-files-found: warn
