@@ -1,0 +1,59 @@
+# Build outputs
+build/
+out/
+bin/
+lib/
+*.exe
+*.dll
+*.lib
+*.pdb
+*.ilk
+*.obj
+*.o
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+_deps/
+
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.suo
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.VC.opendb
+ipch/
+x64/
+x86/
+ARM64/
+Debug/
+Release/
+Release_AVX2/
+
+# Visual Studio Code
+.vscode/
+
+# Package managers
+vcpkg_installed/
+packages/
+
+# Vendor .git directories (keep vendor code, exclude their git)
+vendor/*/.git/
+
+# User-specific files
+*.log
+*.bak
+*.tmp
+*~
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# IDE
+*.idea/
+*.sublime-*
