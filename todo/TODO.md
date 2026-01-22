@@ -70,52 +70,53 @@
 ## Phase 3: Core Backend (ConPTY)
 
 ### 3.1 PtySession Implementation
-- [ ] Create `src/Core/PtySession.h` - ConPTY wrapper class declaration
-- [ ] Create `src/Core/PtySession.cpp` - Implementation:
-  - [ ] Implement pipe creation (input/output)
-  - [ ] Implement `CreatePseudoConsole()` wrapper
-  - [ ] Implement process startup with `PROC_THREAD_ATTRIBUTE_PSEUDOCONSOLE`
-  - [ ] Implement `ResizePseudoConsole()` for window resize
-  - [ ] Implement graceful shutdown and cleanup
-- [ ] Add WIL RAII wrappers for handles (`wil::unique_hfile`, `wil::unique_handle`)
-- [ ] Implement thread-safe ring buffer for output data
+- [x] Create `src/Core/PtySession.h` - ConPTY wrapper class declaration
+- [x] Create `src/Core/PtySession.cpp` - Implementation:
+  - [x] Implement pipe creation (input/output)
+  - [x] Implement `CreatePseudoConsole()` wrapper
+  - [x] Implement process startup with `PROC_THREAD_ATTRIBUTE_PSEUDOCONSOLE`
+  - [x] Implement `ResizePseudoConsole()` for window resize
+  - [x] Implement graceful shutdown and cleanup
+- [x] Add WIL RAII wrappers for handles (`wil::unique_hfile`, `wil::unique_handle`)
+- [x] Implement thread-safe ring buffer for output data
+
 
 ### 3.2 IO Thread Management
-- [ ] Create `src/Core/IoThread.h` - Background read thread
-- [ ] Create `src/Core/IoThread.cpp`:
-  - [ ] Implement 4KB chunk reading from ConPTY output pipe
-  - [ ] Implement thread-safe queue push to ring buffer
-  - [ ] Implement graceful thread termination
-- [ ] Create `src/Core/RingBuffer.h` - Lock-free ring buffer implementation
+- [x] Create `src/Core/IoThread.h` - Background read thread
+- [x] Create `src/Core/IoThread.cpp`:
+  - [x] Implement 4KB chunk reading from ConPTY output pipe
+  - [x] Implement thread-safe queue push to ring buffer
+  - [x] Implement graceful thread termination
+- [x] Create `src/Core/RingBuffer.h` - Lock-free ring buffer implementation
 
 ### 3.3 Process Management
-- [ ] Implement shell detection (cmd.exe, powershell.exe, pwsh.exe, wsl.exe)
-- [ ] Implement environment variable passthrough
-- [ ] Implement working directory setting
-- [ ] Implement custom shell command support
+- [x] Implement shell detection (cmd.exe, powershell.exe, pwsh.exe, wsl.exe)
+- [x] Implement environment variable passthrough
+- [x] Implement working directory setting
+- [x] Implement custom shell command support
 
 ---
 
 ## Phase 4: Terminal Emulation (libvterm)
 
 ### 4.1 VTerm Wrapper
-- [ ] Create `src/Emulation/VTermWrapper.h` - libvterm C++ wrapper
-- [ ] Create `src/Emulation/VTermWrapper.cpp`:
-  - [ ] Initialize `vterm_new()` with screen dimensions
-  - [ ] Implement `vterm_input_write()` for byte feeding
-  - [ ] Set up screen callbacks structure
+- [x] Create `src/Emulation/VTermWrapper.h` - libvterm C++ wrapper
+- [x] Create `src/Emulation/VTermWrapper.cpp`:
+  - [x] Initialize `vterm_new()` with screen dimensions
+  - [x] Implement `vterm_input_write()` for byte feeding
+  - [x] Set up screen callbacks structure
 
 ### 4.2 Screen Callbacks
-- [ ] Implement `putglyph` callback - character placement
-- [ ] Implement `movecursor` callback - cursor position tracking
-- [ ] Implement `settermprop` callback - terminal properties (title, etc.)
-- [ ] Implement `scrollrect` callback - scroll region handling
-- [ ] Implement `moverect` callback - content moving
-- [ ] Implement `erase` callback - screen clearing
-- [ ] Implement `bell` callback - system bell handling
+- [x] Implement `putglyph` callback - character placement
+- [x] Implement `movecursor` callback - cursor position tracking
+- [x] Implement `settermprop` callback - terminal properties (title, etc.)
+- [x] Implement `scrollrect` callback - scroll region handling
+- [x] Implement `moverect` callback - content moving
+- [x] Implement `erase` callback - screen clearing
+- [x] Implement `bell` callback - system bell handling
 
 ### 4.3 Terminal Buffer
-- [ ] Create `src/Core/TerminalBuffer.h`:
+- [x] Create `src/Core/TerminalBuffer.h`:
   ```cpp
   struct Cell {
       uint32_t charCode;  // UTF-32
@@ -123,126 +124,125 @@
       uint8_t attributes; // Bold, Italic, Underline
   };
   ```
-- [ ] Create `src/Core/TerminalBuffer.cpp`:
-  - [ ] Implement `std::vector<Cell>` grid storage
-  - [ ] Implement dirty line tracking for efficient redraws
-  - [ ] Implement scrollback buffer (configurable history)
-- [ ] Implement cell attribute parsing (SGR sequences)
+- [x] Create `src/Core/TerminalBuffer.cpp`:
+  - [x] Implement `std::vector<Cell>` grid storage
+  - [x] Implement dirty line tracking for efficient redraws
+  - [x] Implement scrollback buffer (configurable history)
+- [x] Implement cell attribute parsing (SGR sequences)
 
 ---
 
 ## Phase 5: UI Foundation (WTL + Direct2D)
 
 ### 5.1 Application Framework
-- [ ] Create `src/main.cpp` - Application entry point
-- [ ] Create `src/UI/MainFrame.h` - Main window class (CFrameWindowImpl)
-- [ ] Create `src/UI/MainFrame.cpp`:
-  - [ ] Implement window creation and message loop
-  - [ ] Implement menu bar (File, Edit, View, Help)
-  - [ ] Implement status bar
-- [ ] Create application manifest (`Console3.exe.manifest`):
-  - [ ] Set `<dpiAware>true</dpiAware>` for High-DPI support
-  - [ ] Set `<dpiAwareness>PerMonitorV2</dpiAwareness>`
-  - [ ] Require Windows 10 1809+ compatibility
+- [x] Create `src/main.cpp` - Application entry point
+- [x] Create `src/UI/MainFrame.h` - Main window class (CFrameWindowImpl)
+- [x] Create `src/UI/MainFrame.cpp`:
+  - [x] Implement window creation and message loop
+  - [x] Implement menu bar (File, Edit, View, Help)
+  - [x] Implement status bar
+- [x] Create application manifest (`Console3.exe.manifest`):
+  - [x] Set `<dpiAware>true</dpiAware>` for High-DPI support
+  - [x] Set `<dpiAwareness>PerMonitorV2</dpiAwareness>`
+  - [x] Require Windows 10 1809+ compatibility
 
 ### 5.2 Direct2D Initialization
-- [ ] Create `src/UI/D2DRenderer.h` - Direct2D wrapper
-- [ ] Create `src/UI/D2DRenderer.cpp`:
-  - [ ] Initialize `ID2D1Factory`
-  - [ ] Create `ID2D1HwndRenderTarget`
-  - [ ] Implement render target recreation on resize
-- [ ] Create `src/UI/DirectWriteFont.h` - Font management
-- [ ] Create `src/UI/DirectWriteFont.cpp`:
-  - [ ] Initialize `IDWriteFactory`
-  - [ ] Implement font loading with fallback chain
-  - [ ] Implement `IDWriteTextFormat` creation
+- [x] Create `src/UI/D2DRenderer.h` - Direct2D wrapper
+- [x] Create `src/UI/D2DRenderer.cpp`:
+  - [x] Initialize `ID2D1Factory`
+  - [x] Create `ID2D1HwndRenderTarget`
+  - [x] Implement render target recreation on resize
+- [x] Create `src/UI/DirectWriteFont.h` - Font management
+- [x] Create `src/UI/DirectWriteFont.cpp`:
+  - [x] Initialize `IDWriteFactory`
+  - [x] Implement font loading with fallback chain
+  - [x] Implement `IDWriteTextFormat` creation
 
 ### 5.3 Terminal View
-- [ ] Create `src/UI/TerminalView.h` - Terminal rendering window
-- [ ] Create `src/UI/TerminalView.cpp`:
-  - [ ] Implement `WM_PAINT` handler with `BeginDraw()`/`EndDraw()`
-  - [ ] Implement line-based text rendering with `IDWriteTextLayout`
-  - [ ] Implement cursor rendering (block, underline, bar styles)
-  - [ ] Implement selection highlighting
-  - [ ] Implement only-dirty-lines rendering optimization
+- [x] Create `src/UI/TerminalView.h` - Terminal rendering window
+- [x] Create `src/UI/TerminalView.cpp`:
+  - [x] Implement `WM_PAINT` handler with `BeginDraw()`/`EndDraw()`
+  - [x] Implement line-based text rendering with `IDWriteTextLayout`
+  - [x] Implement cursor rendering (block, underline, bar styles)
+  - [x] Implement selection highlighting
+  - [x] Implement only-dirty-lines rendering optimization
 
 ---
 
 ## Phase 6: Input Handling
 
 ### 6.1 Keyboard Input
-- [ ] Implement `WM_KEYDOWN` / `WM_KEYUP` handling
-- [ ] Create ANSI escape sequence mapping:
-  - [ ] Arrow keys → `\x1b[A`, `\x1b[B`, `\x1b[C`, `\x1b[D`
-  - [ ] Function keys → `\x1b[11~` through `\x1b[24~`
-  - [ ] Home/End/Insert/Delete/PageUp/PageDown
-  - [ ] Ctrl+Key combinations
-  - [ ] Alt+Key combinations (Meta key)
-- [ ] Implement `WM_CHAR` for printable character input
-- [ ] Implement IME (Input Method Editor) support for CJK input
-
+- [x] Implement `WM_KEYDOWN` / `WM_KEYUP` handling
+- [x] Create ANSI escape sequence mapping:
+  - [x] Arrow keys → `\x1b[A`, `\x1b[B`, `\x1b[C`, `\x1b[D`
+  - [x] Function keys → `\x1b[11~` through `\x1b[24~`
+  - [x] Home/End/Insert/Delete/PageUp/PageDown
+  - [x] Ctrl+Key combinations
+  - [x] Alt+Key combinations (Meta key)
+- [x] Implement `WM_CHAR` for printable character input
+- [x] Implement IME (Input Method Editor) support for CJK input
 ### 6.2 Mouse Input
-- [ ] Implement mouse reporting modes (X10, Normal, SGR)
-- [ ] Handle `WM_LBUTTONDOWN`, `WM_RBUTTONDOWN`, `WM_MBUTTONDOWN`
-- [ ] Handle `WM_MOUSEMOVE` for selection and mouse tracking
-- [ ] Handle `WM_MOUSEWHEEL` for scrolling
+- [x] Implement mouse reporting modes (X10, Normal, SGR)
+- [x] Handle `WM_LBUTTONDOWN`, `WM_RBUTTONDOWN`, `WM_MBUTTONDOWN`
+- [x] Handle `WM_MOUSEMOVE` for selection and mouse tracking
+- [x] Handle `WM_MOUSEWHEEL` for scrolling
 
 ### 6.3 Clipboard
-- [ ] Implement copy to clipboard (Ctrl+Shift+C or selection + right-click)
-- [ ] Implement paste from clipboard (Ctrl+Shift+V or right-click)
-- [ ] Implement bracketed paste mode support
+- [x] Implement copy to clipboard (Ctrl+Shift+C or selection + right-click)
+- [x] Implement paste from clipboard (Ctrl+Shift+V or right-click)
+- [x] Implement bracketed paste mode support
 
 ---
 
 ## Phase 7: Window Management
 
 ### 7.1 Resize Handling
-- [ ] Implement `WM_SIZE` handler
-- [ ] Call `ResizePseudoConsole()` on resize
-- [ ] Recalculate rows/columns based on font metrics
-- [ ] Recreate Direct2D render target on resize
+- [x] Implement `WM_SIZE` handler
+- [x] Call `ResizePseudoConsole()` on resize
+- [x] Recalculate rows/columns based on font metrics
+- [x] Recreate Direct2D render target on resize
 
 ### 7.2 Tab System
-- [ ] Create `src/UI/TabControl.h` - Tab management
-- [ ] Create `src/UI/TabControl.cpp`:
-  - [ ] Implement tab bar rendering (custom drawn or CTabCtrl)
-  - [ ] Implement tab creation/closing
-  - [ ] Implement tab switching (Ctrl+Tab, Ctrl+1-9)
-  - [ ] Implement tab reordering (drag & drop)
-  - [ ] Implement tab context menu (Close, Duplicate, etc.)
+- [x] Create `src/UI/TabControl.h` - Tab management
+- [x] Create `src/UI/TabControl.cpp`:
+  - [x] Implement tab bar rendering (custom drawn or CTabCtrl)
+  - [x] Implement tab creation/closing
+  - [x] Implement tab switching (Ctrl+Tab, Ctrl+1-9)
+  - [x] Implement tab reordering (drag & drop)
+  - [x] Implement tab context menu (Close, Duplicate, etc.)
 
 ### 7.3 Session Management
-- [ ] Create `src/Core/Session.h` - Tab session model
-- [ ] Create `src/Core/Session.cpp`:
-  - [ ] Associate PtySession + TerminalBuffer + TerminalView
-  - [ ] Implement session state management
-  - [ ] Implement session serialization for restore
+- [x] Create `src/Core/Session.h` - Tab session model
+- [x] Create `src/Core/Session.cpp`:
+  - [x] Associate PtySession + TerminalBuffer + TerminalView
+  - [x] Implement session state management
+  - [x] Implement session serialization for restore
 
 ---
 
 ## Phase 8: Configuration System
 
 ### 8.1 Settings File
-- [ ] Create `src/Core/Settings.h` - Settings model
-- [ ] Create `src/Core/Settings.cpp`:
-  - [ ] Define settings schema (JSON format)
-  - [ ] Implement settings loading from `%APPDATA%\Console3\settings.json`
-  - [ ] Implement settings saving
-  - [ ] Implement default settings generation
+- [x] Create `src/Core/Settings.h` - Settings model
+- [x] Create `src/Core/Settings.cpp`:
+  - [x] Define settings schema (JSON format)
+  - [x] Implement settings loading from `%APPDATA%\Console3\settings.json`
+  - [x] Implement settings saving
+  - [x] Implement default settings generation
 
 ### 8.2 Configurable Options
-- [ ] Font family and size
-- [ ] Color scheme (16-color palette + ANSI 256 + TrueColor)
-- [ ] Background opacity/transparency
-- [ ] Cursor style and blink rate
-- [ ] Scrollback buffer size
-- [ ] Default shell and arguments
-- [ ] Keyboard shortcuts
-- [ ] Tab behavior settings
+- [x] Font family and size
+- [x] Color scheme (16-color palette + ANSI 256 + TrueColor)
+- [x] Background opacity/transparency
+- [x] Cursor style and blink rate
+- [x] Scrollback buffer size
+- [x] Default shell and arguments
+- [x] Keyboard shortcuts
+- [x] Tab behavior settings
 
 ### 8.3 Settings UI
-- [ ] Create settings dialog (WTL property sheet)
-- [ ] Implement live preview for visual settings
+- [x] Create settings dialog (WTL property sheet)
+- [x] Implement live preview for visual settings
 - [ ] Implement import/export settings
 
 ---
